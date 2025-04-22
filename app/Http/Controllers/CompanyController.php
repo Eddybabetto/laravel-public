@@ -14,18 +14,16 @@ class CompanyController extends Controller
     public function index()
     {
         $all_companies_data = Company::all();
-        return response()->view("companies", ["data"=>$all_companies_data]);
-     //return Inertia::render('Companies', ["data"=>$all_companies_data]);    
-}
-
-    public function getcompany2(){
-
-        return Company::all();
+        return Inertia::render("Companies", ["data" => $all_companies_data]);
+        //return Inertia::render('Companies', ["data"=>$all_companies_data]);    
     }
 
-    public function fetchcompany2(string $id){
+    public function get_drugs_by_company_id($id)
+    {
 
-        return Company::find($id);
+        $drugs = Company::find($id)->drugs;
+        return Inertia::render("Drugs", ["data" => $drugs]);
+
     }
 
     /**
@@ -49,7 +47,9 @@ class CompanyController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = Company::find($id)->load("drugs");
+        return Inertia::render("Company", ["data" => $data]);
+
     }
 
     /**
